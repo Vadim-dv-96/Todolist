@@ -11,11 +11,12 @@ export type TaskType = {
 type PropsType = {
   tittle: string;
   tasks: Array<TaskType>;
-  removeTask: (id: string) => void;
-  changeFilter: (value: FilterValuesType) => void;
-  addTask: (tittle: string) => void;
-  changeTaskStatus: ( taskId:string, isDone:boolean ) => void
-  filter: FilterValuesType
+  removeTask: (id: string,todolistid:string) => void;
+  changeFilter: (value: FilterValuesType, todolistid:string ) => void;
+  addTask: (tittle: string,todolistid:string) => void;
+  changeTaskStatus: ( taskId:string, isDone:boolean,todolistid:string ) => void;
+  filter: FilterValuesType;
+  id: string;
   
 };
 
@@ -30,13 +31,13 @@ export function TodoList(props: PropsType) {
   const onKeyPressHendler = (e: KeyboardEvent<HTMLInputElement>) => {
     setError( null )
     if (e.charCode === 13) {
-      props.addTask(newTaskTittle);
+      props.addTask(newTaskTittle,props.id);
       setnewTaskTittle("");
     }
   };
   const addTask = () => {
     if ( newTaskTittle.trim() !== "" ) {
-       props.addTask(newTaskTittle)
+       props.addTask(newTaskTittle,props.id)
     setnewTaskTittle("");
      } else {
       setError( "Tittle is required" )
@@ -44,9 +45,9 @@ export function TodoList(props: PropsType) {
 
     
   };
-  const onAllClickHendler = () => {props.changeFilter("all")};
-  const onActiveClickHendler = () => {props.changeFilter("active")};
-  const onComletedClickHendler = () => {props.changeFilter("completed")};
+  const onAllClickHendler = () => {props.changeFilter("all", props.id )};
+  const onActiveClickHendler = () => {props.changeFilter("active", props.id )};
+  const onComletedClickHendler = () => {props.changeFilter("completed", props.id )};
   
 
   return (
@@ -68,11 +69,11 @@ export function TodoList(props: PropsType) {
         {props.tasks.map((t) => {
 
           const onRemoveHendler = () => {
-            return props.removeTask(t.id);
+            return props.removeTask(t.id,props.id);
           };
           const onChangeHandler = (e:ChangeEvent<HTMLInputElement>) => { 
             
-            props.changeTaskStatus(t.id,e.currentTarget.checked)
+            props.changeTaskStatus(t.id,e.currentTarget.checked,props.id)
            };
           return (
             <li key={t.id} className={ t.isDone ? "is-done" : "" } >
