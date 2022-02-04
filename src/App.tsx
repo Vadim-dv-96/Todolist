@@ -12,21 +12,19 @@ type TodolistType = {
 };
 
 function App() {
-  
-
-  function removeTask(id: string,todolistid:string) {
-    let tasks= tasksObj[todolistid];
+  function removeTask(id: string, todolistid: string) {
+    let tasks = tasksObj[todolistid];
     let filteredTasks = tasks.filter((t) => t.id !== id);
-    tasksObj[todolistid]=filteredTasks;
-    setTasks({...tasksObj});
+    tasksObj[todolistid] = filteredTasks;
+    setTasks({ ...tasksObj });
   }
 
-  function addTask(tittle: string,todolistid:string) {
+  function addTask(tittle: string, todolistid: string) {
     let newTask = { id: v1(), tittle: tittle, isDone: false };
-    let tasks= tasksObj[todolistid];
+    let tasks = tasksObj[todolistid];
     let newTasks = [newTask, ...tasks];
-    tasksObj[todolistid]=newTasks;
-    setTasks({...tasksObj});
+    tasksObj[todolistid] = newTasks;
+    setTasks({ ...tasksObj });
   }
 
   function changeFilter(value: FilterValuesType, todolistid: string) {
@@ -37,14 +35,13 @@ function App() {
     }
   }
 
-  function changeStatus(taskId: string, isDone: boolean,todolistid:string) {
-    let tasks= tasksObj[todolistid];
+  function changeStatus(taskId: string, isDone: boolean, todolistid: string) {
+    let tasks = tasksObj[todolistid];
     let task = tasks.find((t) => t.id === taskId);
     if (task) {
       task.isDone = isDone;
-      setTasks({...tasksObj});
+      setTasks({ ...tasksObj });
     }
-    
   }
 
   let todolistid1 = v1();
@@ -54,6 +51,13 @@ function App() {
     { id: todolistid1, tittle: "What to learn", filter: "active" },
     { id: todolistid2, tittle: "What to buy", filter: "completed" },
   ]);
+
+  let removeTodolist = (todolistid: string) => {
+    let filteredTodolist = todolists.filter((tl) => tl.id !== todolistid);
+    setTodolists(filteredTodolist)
+    delete tasksObj[todolistid]
+    setTasks({...tasksObj})
+  };
 
   let [tasksObj, setTasks] = useState({
     [todolistid1]: [
@@ -91,6 +95,7 @@ function App() {
             addTask={addTask}
             changeTaskStatus={changeStatus}
             filter={tl.filter}
+            removeTodolist={removeTodolist}
           />
         );
       })}
