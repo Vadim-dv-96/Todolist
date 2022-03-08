@@ -17,7 +17,7 @@ import { TaskType, TodoList } from "./components/todolist/TodoList";
 
 export type FilterValuesType = "all" | "completed" | "active";
 
-type TodolistType = {
+export type TodolistType = {
   id: string;
   tittle: string;
   filter: FilterValuesType;
