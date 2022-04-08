@@ -12,7 +12,7 @@ type TaskPropsType = {
   task: TaskType;
   todolistId: string;
 };
-export const Task = React.memo( (props: TaskPropsType) => {
+export const Task= React.memo( (props: TaskPropsType) => {
 
   const onRemoveHendler = () => {
     return props.removeTask(props.task.id, props.todolistId);
