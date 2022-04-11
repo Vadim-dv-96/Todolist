@@ -15,7 +15,7 @@ export type ResponseType<T ={}> = {
     data: T
 }
 
-type TodoType = {
+export type TodolistType = {
     id: string
     title: string
     addedDate: string
@@ -26,14 +26,14 @@ type TodoType = {
 
 export const todolistApi = {
     getTodolists() {
-        return instance.get<Array<TodoType>>('todo-lists')
+        return instance.get<Array<TodolistType>>('todo-lists')
 
         // let promise = axios.get('https://social-network.samuraijs.com/api/1.1/todo-lists', settings)
         // return promise
     },
 
     createTodolist(title: string) {
-        return instance.post<ResponseType<{item: TodoType}>>('todo-lists', { title })
+        return instance.post<ResponseType<{item: TodolistType}>>('todo-lists', { title })
 
     },
 

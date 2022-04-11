@@ -2,23 +2,18 @@ import { Delete } from "@mui/icons-material";
 import { Button, IconButton } from "@mui/material";
 import React from "react";
 import { useCallback } from "react";
-import { FilterValuesType } from "../../App";
+import { TaskStatuses, TaskType } from "../../api/task-api";
+import { FilterValuesType } from "../../state/todolists-reducer";
 import { AddItemForm } from "./AddItemForm";
 import { EditableSpan } from "./EditableSpan";
 import { Task } from "./Task";
 
 
-export type TaskType = {
-  id: string;
-  tittle: string;
-  isDone: boolean;
-};
-
 type PropsType = {
   tittle: string;
   tasks: Array<TaskType>;
   removeTask: (id: string,todolistid:string) => void;
-  changeTaskStatus: ( taskId:string, isDone:boolean,todolistid:string ) => void;
+  changeTaskStatus: ( taskId:string, status: TaskStatuses,todolistid:string ) => void;
   changeTaskTittle: ( taskId:string, newValue:string,todolistid:string ) => void;
   changeFilter: (value: FilterValuesType, todolistid:string ) => void;
   addTask: (tittle: string,todolistid:string) => void;
@@ -42,7 +37,7 @@ export const TodoList = React.memo( function(props: PropsType) {
   }, [ props.addTask, props.id ] );
 
   const changeTodolistTittle = useCallback( (newTittle:string) => {
-   props.changeTodolistTittle(  props.id, newTittle )
+  props.changeTodolistTittle(  props.id, newTittle )
   }, [ props.changeTodolistTittle, props.id ] )
 
   const onAllClickHendler = useCallback( () => {props.changeFilter("all", props.id )},[props.changeFilter, props.id]);
@@ -54,11 +49,11 @@ export const TodoList = React.memo( function(props: PropsType) {
   let tasksForTodolist = props.tasks
 
   if (props.filter === "active") {
-    tasksForTodolist = props.tasks.filter((t) => t.isDone === false)
+    tasksForTodolist = props.tasks.filter((t) => t.status === TaskStatuses.New)
   }
 
   if (props.filter === "completed") {
-    tasksForTodolist = props.tasks.filter((t) => t.isDone === true)
+    tasksForTodolist = props.tasks.filter((t) => t.status === TaskStatuses.Completed)
   }
   
   return (
