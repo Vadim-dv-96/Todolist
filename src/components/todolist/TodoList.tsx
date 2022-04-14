@@ -1,8 +1,10 @@
 import { Delete } from "@mui/icons-material";
 import { Button, IconButton } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { useCallback } from "react";
+import { useDispatch } from "react-redux";
 import { TaskStatuses, TaskType } from "../../api/task-api";
+import { fetchTasksTC } from "../../state/tasks-reducer";
 import { FilterValuesType } from "../../state/todolists-reducer";
 import { AddItemForm } from "./AddItemForm";
 import { EditableSpan } from "./EditableSpan";
@@ -25,7 +27,12 @@ type PropsType = {
 };
 
 export const TodoList = React.memo( function(props: PropsType) {
-  console.log("todolist is called")
+  
+  const dispatch = useDispatch();
+
+  useEffect(()=>{
+    dispatch(fetchTasksTC(props.id))
+  },[])
 
   const removeTodolist = () => {
     props.removeTodolist(props.id)

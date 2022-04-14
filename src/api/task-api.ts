@@ -43,11 +43,11 @@ type GetTasksResposnseType = {
     items: TaskType[] //массив тасок
 }
 
-type UpdateTaskModelType = {
+export type UpdateTaskModelType = {
     title: string
     description: string
-    status: number
-    priority: number
+    status: TaskStatuses
+    priority: TaskPriorities
     startDate: string
     deadline: string
 }
@@ -59,7 +59,7 @@ export const taskApi = {
     },
 
     createTask(todolistId: string, title: string) {
-        return instance.post<ResponseType<TaskType>>(`todo-lists/${todolistId}/tasks`, { title })
+        return instance.post<ResponseType<{item:TaskType}>>(`todo-lists/${todolistId}/tasks`, { title })
 
     },
 
@@ -69,6 +69,6 @@ export const taskApi = {
     },
 
     updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
-        return instance.put(`todo-lists/${todolistId}/tasks/${taskId}`, model )
+        return instance.put<UpdateTaskModelType, ResponseType<{item:TaskType}>>(`todo-lists/${todolistId}/tasks/${taskId}`, model )
     }
 }
