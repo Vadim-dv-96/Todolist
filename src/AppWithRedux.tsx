@@ -3,15 +3,26 @@ import {
   Button,
   Container,
   IconButton,
+  LinearProgress,
   Toolbar,
   Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import "./App.css";
 import { TodolistsList } from "./components/TodolistsList";
+import { useAppSelector } from "./state/store";
+import { RequestStatusType } from "./state/app-reducer";
+import { ErrorSnackbar } from "./components/ErrorSnackbar/ErrorSnackbar";
+
 
 
 function AppWithRedux() {
+  // альтернативная типизация
+  // const status = useSelector((state: AppRootState): RequestStatusType => { 
+  //   return state.app.status; })
+
+  // хук для типизации useSelector
+  const status = useAppSelector< RequestStatusType >( state => state.app.status )
 
   return (
     <div className="App">
@@ -32,9 +43,13 @@ function AppWithRedux() {
           <Button color="inherit">Login</Button>
         </Toolbar>
       </AppBar>
+
+      { status === "loading" && <LinearProgress color="secondary" /> }
+      
       <Container fixed>
         <TodolistsList />
       </Container>
+      <ErrorSnackbar/>
     </div>
   );
 }

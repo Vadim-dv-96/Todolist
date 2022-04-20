@@ -1,14 +1,20 @@
+import { TypedUseSelectorHook, useSelector } from "react-redux";
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import thunk from "redux-thunk";
+import { appReducer } from "./app-reducer";
 import { tasksReducer } from "./tasks-reducer";
 import { todolistsReducer } from "./todolists-reducer";
 
 const rootReducer = combineReducers( {
     todolists: todolistsReducer,
-    tasks: tasksReducer
+    tasks: tasksReducer,
+    app: appReducer
 } );
 
 export type AppRootState = ReturnType<typeof rootReducer>
+
+// хук для типизации useSelector 
+export const useAppSelector: TypedUseSelectorHook<AppRootState> = useSelector
 
 export const store = createStore(rootReducer, applyMiddleware(thunk));
 

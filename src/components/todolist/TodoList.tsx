@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { TaskStatuses, TaskType } from "../../api/task-api";
+import { RequestStatusType } from "../../state/app-reducer";
 import { fetchTasksTC } from "../../state/tasks-reducer";
 import { FilterValuesType } from "../../state/todolists-reducer";
 import { AddItemForm } from "./AddItemForm";
@@ -23,7 +24,7 @@ type PropsType = {
   id: string;
   removeTodolist:( todolistid:string ) => void;
   changeTodolistTittle:( todolistid:string, newTittle: string ) => void;
-  
+  entityStatus: RequestStatusType
 };
 
 export const TodoList = React.memo( function(props: PropsType) {
@@ -67,9 +68,9 @@ export const TodoList = React.memo( function(props: PropsType) {
     <div>
       <h3> <EditableSpan tittle={props.tittle} onChange={ changeTodolistTittle } /> 
 
-      <IconButton onClick={removeTodolist}> <Delete/> </IconButton>
+      <IconButton onClick={removeTodolist} disabled={props.entityStatus === "loading" } > <Delete/> </IconButton>
       
-      <AddItemForm  addItem={ addTask } />
+      <AddItemForm  addItem={ addTask } entityStatus={props.entityStatus} />
       </h3>
 
       <div>

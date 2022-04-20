@@ -68,6 +68,7 @@ export const TodolistsList = () => {
                     <Grid key={tl.id} item >
                         <Paper style={{ padding: "10px" }} >
                             <TodoList
+                                entityStatus={tl.entityStatus}
                                 id={tl.id}
                                 tittle={tl.title}
                                 tasks={tasksForTodolist}
