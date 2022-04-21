@@ -2,7 +2,7 @@ import { AxiosError } from "axios";
 import { Dispatch } from "redux";
 import { taskApi, TaskPriorities, TaskStatuses, TaskType, UpdateTaskModelType } from "../api/task-api";
 import { handleServerAppError, handleServerNetworkError } from "../utils/error-utils";
-import { setAppErrorAC, setAppStatusAC } from "./app-reducer";
+import { setAppStatusAC } from "./app-reducer";
 import { AppRootState } from "./store";
 import { AddTodolistActionType, RemoveTodolistActionType, SetTodolistActionType } from "./todolists-reducer";
 
@@ -88,10 +88,15 @@ export const setTasksAC = (todoId: string, tasks: Array<TaskType>) => {
 
 // thunks
 export const fetchTasksTC = (todoId: string) => (dispatch: Dispatch) => {
+  dispatch(setAppStatusAC("loading"))
   taskApi.getTasks(todoId)
     .then((res) => {
       const tasks = res.data.items
       dispatch(setTasksAC(todoId, tasks))
+      dispatch(setAppStatusAC("succeeded"))
+    })
+    .catch((error: AxiosError) => {
+      handleServerNetworkError(error, dispatch)
     })
 }
 
@@ -116,8 +121,15 @@ export const deleteTaskTC = (todolistId: string, taskId: string) => (dispatch: D
   dispatch(setAppStatusAC("loading"))
   taskApi.deleteTask(todolistId, taskId)
     .then((res) => {
-      dispatch(removeTaskAC(taskId, todolistId))
-      dispatch(setAppStatusAC("succeeded"))
+      if (res.data.resultCode === 0) {
+        dispatch(removeTaskAC(taskId, todolistId))
+        dispatch(setAppStatusAC("succeeded"))
+      } else {
+        handleServerAppError(res.data, dispatch)
+      }
+    })
+    .catch((error: AxiosError) => {
+      handleServerNetworkError(error, dispatch)
     })
 }
 
@@ -146,11 +158,17 @@ export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelT
     dispatch(setAppStatusAC("loading"))
     taskApi.updateTask(todolistid, taskId, Apimodel)
       .then((res) => {
-        dispatch(updateTaskAC(taskId, domainModel, todolistid))
-        dispatch(setAppStatusAC("succeeded"))
+        if (res.data.resultCode === 0) {
+          dispatch(updateTaskAC(taskId, domainModel, todolistid))
+          dispatch(setAppStatusAC("succeeded"))
+        } else {
+          handleServerAppError(res.data, dispatch)
+        }
+      })
+      .catch((error: AxiosError) => {
+        handleServerNetworkError(error, dispatch)
       })
   }
-
 }
 
 // types

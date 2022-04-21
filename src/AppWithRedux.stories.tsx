@@ -4,11 +4,11 @@ import { ReduxStoreProviderDecorator } from './stories/ReduxStoreProviderDecorat
 export default {
   title: 'AppWithRedux Component',
   component: AppWithRedux,
-  decorators: [ReduxStoreProviderDecorator] 
-   };
+  decorators: [ReduxStoreProviderDecorator]
+};
 
 export const AppWithReduxBaseExample = () => {
-  return <AppWithRedux/>
+  return <AppWithRedux demo={true} />
 }
 
 

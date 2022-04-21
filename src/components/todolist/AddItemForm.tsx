@@ -2,14 +2,14 @@ import { AddBox } from "@mui/icons-material";
 import {  IconButton, TextField } from "@mui/material";
 import React from "react";
 import { ChangeEvent, KeyboardEvent, useState } from "react";
-import { RequestStatusType } from "../../state/app-reducer";
+
 
 type AddItemFormPropsType = {
   addItem: (tittle: string) => void
-  entityStatus?: RequestStatusType
+  disabled?: boolean
   
 };
-export const AddItemForm = React.memo( (props: AddItemFormPropsType) => {
+export const AddItemForm = React.memo( ({addItem, disabled = false}: AddItemFormPropsType) => {
   console.log("AddItemForm is called");
   
 
@@ -35,7 +35,7 @@ export const AddItemForm = React.memo( (props: AddItemFormPropsType) => {
   const addTask = () => {
     
     if (newTaskTittle.trim() !== "") {
-      props.addItem(newTaskTittle.trim());
+      addItem(newTaskTittle.trim());
       setnewTaskTittle("");
     } else {
       
@@ -51,10 +51,10 @@ export const AddItemForm = React.memo( (props: AddItemFormPropsType) => {
         onKeyPress={onKeyPressHendler}
         error={!!error}
         helperText={error}
-        disabled={props.entityStatus === "loading" }
+        disabled={disabled }
          />
 
-      <IconButton onClick={addTask}  color={"primary"} disabled={props.entityStatus === "loading"} >
+      <IconButton onClick={addTask}  color={"primary"} disabled={disabled} >
         <AddBox/>
       </IconButton>
     </div>

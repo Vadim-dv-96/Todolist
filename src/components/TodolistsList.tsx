@@ -8,7 +8,11 @@ import { TodolistDomainType, fetchTodosTC, FilterValuesType, changeTodolistFilte
 import { AddItemForm } from "./todolist/AddItemForm";
 import { TodoList } from "./todolist/TodoList";
 
-export const TodolistsList = () => {
+type PropsType = {
+    demo?: boolean
+}
+
+export const TodolistsList: React.FC<PropsType> = ({ demo = false }) => {
 
     const todolists = useSelector<AppRootState, Array<TodolistDomainType>>(state => state.todolists)
     const tasksObj = useSelector<AppRootState, TasksStateType>(state => state.tasks)
@@ -16,8 +20,11 @@ export const TodolistsList = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
+        if (demo) {
+            return
+        }
         dispatch(fetchTodosTC())
-    }, [dispatch])
+    }, [])
 
     const removeTask = useCallback(function (id: string, todolistid: string) {
         dispatch(deleteTaskTC(todolistid, id))
@@ -68,18 +75,16 @@ export const TodolistsList = () => {
                     <Grid key={tl.id} item >
                         <Paper style={{ padding: "10px" }} >
                             <TodoList
-                                entityStatus={tl.entityStatus}
-                                id={tl.id}
-                                tittle={tl.title}
+                                todolist={tl}
                                 tasks={tasksForTodolist}
                                 removeTask={removeTask}
                                 changeFilter={changeFilter}
                                 addTask={addTask}
                                 changeTaskStatus={changeStatus}
-                                filter={tl.filter}
                                 removeTodolist={removeTodolist}
                                 changeTaskTittle={changeTaskTittle}
                                 changeTodolistTittle={changeTodolistTittle}
+                                demo={demo}
                             />
                         </Paper>
                     </Grid>

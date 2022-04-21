@@ -11,6 +11,7 @@ type TaskPropsType = {
   changeTaskTittle: (taskId: string, newValue: string, todolistid: string) => void;
   task: TaskType;
   todolistId: string;
+  
 };
 export const Task= React.memo( (props: TaskPropsType) => {
 
@@ -35,7 +36,7 @@ export const Task= React.memo( (props: TaskPropsType) => {
 
       <EditableSpan tittle={props.task.title} onChange={onChangeTittleHandler} />
 
-      <IconButton onClick={onRemoveHendler}> <Delete /> </IconButton>
+      <IconButton onClick={onRemoveHendler} > <Delete/> </IconButton>
 
     </div>
   );

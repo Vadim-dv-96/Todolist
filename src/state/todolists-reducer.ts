@@ -25,19 +25,12 @@ export const todolistsReducer = (state: Array<TodolistDomainType> = initialState
     }
 
     case "CHANGE-TODOLIST-TITLE": {
-      const todolist = state.find((todolists) => todolists.id === action.id);
-      if (todolist) {
-        todolist.title = action.tittle;
-      }
-      return [...state];
+      return state.map(tl => tl.id === action.id ? { ...tl, title: action.tittle } : tl)
     }
 
     case "CHANGE-TODOLIST-FILTER": {
-      const todolist = state.find((todolists) => todolists.id === action.id);
-      if (todolist) {
-        todolist.filter = action.filter;
-      }
-      return [...state];
+      return state.map(tl => tl.id === action.id ? { ...tl, filter: action.filter } : tl)
+
     }
 
     case "CHANGE-TODOLIST-ENTITY-STATUS": {
@@ -83,6 +76,10 @@ export const fetchTodosTC = () => (dispatch: Dispatch): void => {
       let todos = res.data
       dispatch(setTodolistsAC(todos))
       dispatch(setAppStatusAC("succeeded"))
+    })
+    .catch((err: AxiosError) => {
+      dispatch(setAppErrorAC(err.message))
+      dispatch(setAppStatusAC("failed"))
     })
 }
 
@@ -130,10 +127,18 @@ export const updateTodolistTitleTC = (id: string, newTittle: string) =>
     dispatch(setAppStatusAC("loading"))
     todolistApi.updateTodolistTitle(id, newTittle)
       .then((res) => {
-        dispatch(changeTodolistTittleAC(id, newTittle))
-        dispatch(setAppStatusAC("succeeded"))
+        if (res.data.resultCode === 0) {
+          dispatch(changeTodolistTittleAC(id, newTittle))
+          dispatch(setAppStatusAC("succeeded"))
+        } else {
+          handleServerAppError(res.data, dispatch)
+        }
+      })
+      .catch((error: AxiosError) => {
+        handleServerNetworkError(error, dispatch)
       })
   }
+
 
 // types
 export type SetTodolistActionType = ReturnType<typeof setTodolistsAC>
