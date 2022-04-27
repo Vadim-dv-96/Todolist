@@ -1,6 +1,7 @@
 import { Grid, Paper } from "@mui/material";
 import { useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Navigate } from "react-router-dom";
 import { TaskStatuses } from "../api/task-api";
 import { AppRootState } from "../state/store";
 import { TasksStateType, deleteTaskTC, addTaskTC, updateTaskTC } from "../state/tasks-reducer";
@@ -18,9 +19,10 @@ export const TodolistsList: React.FC<PropsType> = ({ demo = false }) => {
     const tasksObj = useSelector<AppRootState, TasksStateType>(state => state.tasks)
 
     const dispatch = useDispatch();
+    const isLoggedIn = useSelector<AppRootState, boolean>(state => state.auth.isLoggedIn )
 
     useEffect(() => {
-        if (demo) {
+        if (demo || !isLoggedIn ) {
             return
         }
         dispatch(fetchTodosTC())
@@ -60,6 +62,10 @@ export const TodolistsList: React.FC<PropsType> = ({ demo = false }) => {
     const addTodoList = useCallback((tittle: string) => {
         dispatch(addTodolistTC(tittle))
     }, [dispatch]);
+
+    if(!isLoggedIn) {
+        return <Navigate to={"/login"} />
+    }
 
     return <>
         <Grid container style={{ padding: "20px" }} >

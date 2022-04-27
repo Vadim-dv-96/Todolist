@@ -4,7 +4,6 @@ import React, { useEffect } from "react";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { TaskStatuses, TaskType } from "../../api/task-api";
-import { RequestStatusType } from "../../state/app-reducer";
 import { fetchTasksTC } from "../../state/tasks-reducer";
 import { FilterValuesType, TodolistDomainType } from "../../state/todolists-reducer";
 import { AddItemForm } from "./AddItemForm";
