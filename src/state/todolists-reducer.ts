@@ -42,7 +42,6 @@ export const todolistsReducer = (state: Array<TodolistDomainType> = initialState
         }
       })
     }
-
     default:
       return state
   }

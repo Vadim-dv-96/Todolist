@@ -15,17 +15,12 @@ export const todolistApi = {
         // let promise = axios.get('https://social-network.samuraijs.com/api/1.1/todo-lists', settings)
         // return promise
     },
-
     createTodolist(title: string) {
         return instance.post<ResponseType<{ item: TodolistType }>>('todo-lists', { title })
-
     },
-
     deleteTodolist(todolistId: string) {
         return instance.delete<ResponseType>(`todo-lists/${todolistId}`)
-
     },
-
     updateTodolistTitle(todolistId: string, title: string) {
         return instance.put<ResponseType>(`todo-lists/${todolistId}`, { title })
     }
@@ -42,28 +37,24 @@ export const authAPI = {
         return instance.delete<ResponseType>("auth/login")
     }
 }
-
 // types
 export type MeResponseType = {
     id: number
     email: string
     login: string
 }
-
 export type LoginParamsType = {
     email: string
     password: string
     rememberMe?: boolean
     captcha?: string
 }
-
 export type ResponseType<T = {}> = {
     fieldsErrors: Array<string>
     messages: Array<string>
     resultCode: number
     data: T
 }
-
 export type TodolistType = {
     id: string
     title: string

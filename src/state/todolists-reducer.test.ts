@@ -20,9 +20,6 @@ const startState: Array<TodolistDomainType> = [
 const domainStartState = startState
 
 test('correct todolist should be removed', () => {
-
-
-
     const endState = todolistsReducer(domainStartState, removeTodolistAC(todolistId1))
 
     expect(endState.length).toBe(1);
@@ -36,7 +33,6 @@ test('correct todolist should be added', () => {
         order: 0,
         id: todolistId1
     };
-
 
     const endState = todolistsReducer(domainStartState, addTodolistAC(todolist))
 
