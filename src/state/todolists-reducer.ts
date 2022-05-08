@@ -137,6 +137,25 @@ export const updateTodolistTitleTC = (id: string, newTittle: string) =>
         handleServerNetworkError(error, dispatch)
       })
   }
+  
+// async await
+// export const updateTodolistTitleTC = (id: string, newTittle: string) =>
+//   async (dispatch: Dispatch) => {
+//     dispatch(setAppStatusAC("loading"))
+//     try {
+//       let res = await todolistApi.updateTodolistTitle(id, newTittle)
+//       if (res.data.resultCode === 0) {
+//         dispatch(changeTodolistTittleAC(id, newTittle))
+//         dispatch(setAppStatusAC("succeeded"))
+//       } else {
+//         handleServerAppError(res.data, dispatch)
+//       }
+//     } catch (error) {
+//       if (error instanceof Error) {
+//         handleServerNetworkError(error, dispatch)
+//       }
+//     }
+//   }
 
 
 // types
